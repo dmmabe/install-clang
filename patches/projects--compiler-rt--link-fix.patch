@@ -1,7 +1,9 @@
-From 6515d9951bb68a7028e56e37ea6255a940c7ebf2 Mon Sep 17 00:00:00 2001
-From: Robin Sommer <robin@icir.org>
-Date: Sun, 15 Jun 2014 20:02:25 -0700
+From abe024653bd24f289d1e14a24a8e8468f01d4012 Mon Sep 17 00:00:00 2001
+From: David Mabe <dmmabe@ncsu.edu>
+Date: Sun, 29 Mar 2015 18:46:59 -0400
 Subject: [PATCH] Disable iossim build to fix linker errors.
+
+Patch from Robin Sommer <robin@icir.org> re-rolled to LLVM 3.6.
 
 When attempting to build the address sanitizer for the iOS simulator,
 we run into an architecture mismatch between dependent shared
@@ -13,10 +15,10 @@ Disabling the iOS simulator build fixes the issue.
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 3b52403..3571aa1 100644
+index f8f5263..fbc84e8 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -341,7 +341,9 @@ if(APPLE)
+@@ -304,7 +304,9 @@ if(APPLE)
           MACOSX_VERSION_MIN_FLAG "${CMAKE_CXX_FLAGS}")
    set(SANITIZER_COMMON_SUPPORTED_DARWIN_OS osx)
    if (IOSSIM_SDK_DIR AND NOT MACOSX_VERSION_MIN_FLAG)
@@ -26,7 +28,7 @@ index 3b52403..3571aa1 100644
 +    # list(APPEND SANITIZER_COMMON_SUPPORTED_DARWIN_OS iossim)
    endif()
  
-   if(COMPILER_RT_USES_LIBCXX)
+   set(SANITIZER_MIN_OSX_VERSION 10.7)
 -- 
-1.9.3
+1.9.5 (Apple Git-50.3)
 

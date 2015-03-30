@@ -151,19 +151,14 @@ shift
 
 if [ "${use_master}" != "1" ]; then
     # git version to checkout.
-    version_llvm=release_35
-    version_clang=release_35
-    version_libcxx=release_35
-    version_compilerrt=release_35
-    version_libcxxabi=239a032       # No 3.5 branch. Hardcoding.
-    version_lldb=master             # No 3.5 branch. Probably won't work.
-    version_lld=master              # No 3.5 branch. Probably won't work.
-    version_extra=release_35
-
-    cherrypick="projects/libcxx 0c6d1a88 e515bbda f2e8c0454"  # Fix linking against in-tree libc++abi.
-    cherrypick="$cherrypick;/ 168d0c143"  # Correctly add libc++abi to project list.
-    cherrypick="$cherrypick;/ d9aaca0ec"  # Fix libc++abi build on FreeBSD.
-
+    version_llvm=release_36
+    version_clang=release_36
+    version_libcxx=release_36
+    version_compilerrt=release_36
+    version_libcxxabi=release_36
+    version_lldb=release_36
+    version_lld=release_36
+    version_extra=release_36
 else
     # git version to checkout.
     version_llvm=master
@@ -301,8 +296,8 @@ if [ "${perform_clone}" == "1" ]; then
         ( cd ${src_libcxxabi} && git checkout -q ${version_libcxxabi} )
 
         if [ "${perform_extra_build}" == "1" ]; then
-            ( cd $src/tools && git clone http://llvm.org/git/clang-tools-extra.git extra )
-            ( cd $src/tools/extra && git checkout -q ${version_extra} )
+            ( cd $src/tools/clang/tools && git clone http://llvm.org/git/clang-tools-extra.git extra )
+            ( cd $src/tools/clang/tools/extra && git checkout -q ${version_extra} )
         fi
 
         if [ "${perform_lldb_build}" == "1" ]; then

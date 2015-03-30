@@ -1,26 +1,27 @@
-From 9505f69390ddde3ff45b0f52180d59ae7ae9b37e Mon Sep 17 00:00:00 2001
-From: Robin Sommer <robin@icir.org>
-Date: Mon, 1 Sep 2014 08:31:32 -0700
-Subject: [PATCH] Adapting library's install_name on Darwin to installation
+From 2332e4e6552c0513a82e6d5f6cb7056cc3da3e6e Mon Sep 17 00:00:00 2001
+From: David Mabe <dmmabe@ncsu.edu>
+Date: Sun, 29 Mar 2015 19:24:35 -0400
+Subject: [PATCH] Adapting library's install_name on Darwin to installation 
  prefix.
 
+Patch from Robin Sommer <robin@icir.org> re-rolled to LLVM 3.6.
 ---
  src/CMakeLists.txt | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 774ef27..4e581a0 100644
+index 5c9e38b..385d2c5 100644
 --- a/src/CMakeLists.txt
 +++ b/src/CMakeLists.txt
-@@ -67,12 +67,13 @@ if ( APPLE )
-     list(APPEND link_flags
+@@ -77,12 +77,13 @@ if ( APPLE )
+     list(APPEND LIBCXXABI_LINK_FLAGS
        "-compatibility_version 1"
        "-current_version 1"
 -      "-install_name /usr/lib/libc++abi.1.dylib"
 +      "-install_name ${CMAKE_INSTALL_PREFIX}/lib/libc++abi.1.dylib"
        "/usr/lib/libSystem.B.dylib")
    else()
-     list(APPEND link_flags
+     list(APPEND LIBCXXABI_LINK_FLAGS
        "-compatibility_version 1"
 -      "-install_name /usr/lib/libc++abi.1.dylib")
 +      "-install_name ${CMAKE_INSTALL_PREFIX}/lib/libc++abi.1.dylib"
@@ -28,7 +29,7 @@ index 774ef27..4e581a0 100644
    endif()
  endif()
  
-@@ -86,6 +87,7 @@ set_target_properties(cxxabi
+@@ -96,6 +97,7 @@ set_target_properties(cxxabi
      OUTPUT_NAME   "c++abi"
      VERSION       "1.0"
      SOVERSION     "1"
@@ -37,5 +38,5 @@ index 774ef27..4e581a0 100644
  
  install(TARGETS cxxabi
 -- 
-2.1.0
+1.9.5 (Apple Git-50.3)
 

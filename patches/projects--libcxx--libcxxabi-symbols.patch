@@ -1,32 +1,34 @@
-From 4f3cbfe81887dde86fe009e5dcc5fb124ba625f8 Mon Sep 17 00:00:00 2001
-From: Matthias Vallentin <vallentin@icir.org>
-Date: Fri, 20 Dec 2013 12:17:03 -0800
+From 3a987977df5cf066fbfa0d7c4d2356444f6e35ef Mon Sep 17 00:00:00 2001
+From: David Mabe <dmmabe@ncsu.edu>
+Date: Sun, 29 Mar 2015 18:52:48 -0400
 Subject: [PATCH] Use all symbols of the static libc++abi library.
+
+Patch from Matthias Vallentin <vallentin@icir.org> re-rolled to LLVM 3.6.
 
 When linking libc++ with our static version of libc+abi, we would like to
 include all symbols that applications may need in the future and not just those
 used by libc++.
 ---
- lib/CMakeLists.txt |    6 +++++-
- 1 files changed, 5 insertions(+), 1 deletions(-)
+ lib/CMakeLists.txt | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/lib/CMakeLists.txt b/lib/CMakeLists.txt
-index cec0bee..bc3bd5c 100644
+index 02c80d9..c0ca9d9 100644
 --- a/lib/CMakeLists.txt
 +++ b/lib/CMakeLists.txt
-@@ -36,7 +36,11 @@ if (DEFINED LIBCXX_CXX_ABI_DEPS)
+@@ -39,7 +39,11 @@ if (DEFINED LIBCXX_CXX_ABI_DEPS)
  endif()
  
  # Generate library list.
--set(libraries ${LIBCXX_CXX_ABI_LIBRARIES})
+-set(libraries ${LIBCXX_CXX_ABI_LIBRARY})
 +if (LIBCXX_LIBCXXABI_WHOLE_ARCHIVE)
-+  set(libraries -Wl,--whole-archive ${LIBCXX_CXX_ABI_LIBRARIES} -Wl,--no-whole-archive)
++  set(libraries -Wl,--whole-archive ${LIBCXX_CXX_ABI_LIBRARY} -Wl,--no-whole-archive)
 +else()
-+  set(libraries ${LIBCXX_CXX_ABI_LIBRARIES})
++  set(libraries ${LIBCXX_CXX_ABI_LIBRARY})
 +endif()
  append_if(libraries LIBCXX_HAS_PTHREAD_LIB pthread)
  append_if(libraries LIBCXX_HAS_C_LIB c)
  append_if(libraries LIBCXX_HAS_M_LIB m)
 -- 
-1.7.6.4
+1.9.5 (Apple Git-50.3)
 
